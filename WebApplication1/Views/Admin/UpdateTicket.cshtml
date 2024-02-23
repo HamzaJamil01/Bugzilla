@@ -1,0 +1,108 @@
+﻿@model TicketUsersViewModel
+@* @{
+    ViewData["Title"] = "Update Ticket";
+} *@
+<form action="~/Admin/UpdateTicket" method="post" class="mx-1 mx-md-4">
+    <input type="hidden" asp-for="@Model.ticket.Id" />
+    <div class="d-flex flex-row align-items-center mb-4">
+        <div class="form-outline flex-fill mb-0">
+            <label asp-for="@Model.ticket.Title" class="fw-bold">Title</label>
+            <input asp-for="@Model.ticket.Title" class="form-control" />
+            <span asp-validation-for="@Model.ticket.Title" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="d-flex flex-row align-items-center mb-4">
+        <div class="form-outline flex-fill mb-0">
+            <label asp-for="@Model.ticket.Description" class="fw-bold">Description</label>
+            <span class="username d-block form-control">
+                <input asp-for="@Model.ticket.Description" class="form-control border-0" />
+            </span>
+            <span asp-validation-for="@Model.ticket.Description" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="d-flex flex-row align-items-center mb-4">
+        <div class="form-outline flex-fill mb-0">
+            <label asp-for="@Model.ticket.status" class="fw-bold">Status</label>
+            <select asp-for="@Model.ticket.status" class="form-control">
+                @if (Model.ticket.status == "To Do")
+                {
+                    <option value="To Do" selected>To Do</option>
+                }
+                else
+                {
+                    <option value="To Do">To Do</option>
+                }
+                @if (Model.ticket.status == "In Process")
+                {
+                    <option value="In Process" selected>In Process</option>
+                }
+                else
+                {
+                    <option value="In Process">In Process</option>
+                }
+                @if (Model.ticket.status == "In review")
+                {
+                    <option value="In review" selected>In review</option>
+                }
+                else
+                {
+                    <option value="In review">In review</option>
+                }
+                @if (Model.ticket.status == "In Testing")
+                {
+                    <option value="In Testing" selected>In Testing</option>
+                }
+                else
+                {
+                    <option value="In Testing">In Testing</option>
+                }
+                @if (Model.ticket.status == "Done")
+                {
+                    <option value="Done" selected>Done</option>
+                }
+                else
+                {
+                    <option value="Done">Done</option>
+                }
+            </select>
+
+            <span asp-validation-for="@Model.ticket.status" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="d-flex flex-row align-items-center mb-4">
+        <div class="form-outline flex-fill mb-0">
+            <label asp-for="@Model.ticket.AssignedTo" class="fw-bold">Assigned To</label>
+            <select asp-for="@Model.ticket.AssignedTo" class="form-control">
+                @foreach (var user in Model.user as List<CustomUser> ?? new List<CustomUser>())
+                {
+                    if (user.FullName != "admin")
+                    {
+                        if(user.FullName == Model.ticket.AssignedTo)
+                        {
+                            <option value="@user.FullName" selected>@user.FullName - @user.Designation</option>
+                        }
+                        else
+                        {
+                            <option value="@user.FullName">@user.FullName - @user.Designation</option>
+                        }
+                    }
+                }
+            </select>
+
+            <span asp-validation-for="@Model.ticket.status" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="d-flex flex-row align-items-center mb-4">
+        <div class="form-outline flex-fill mb-0">
+            <label asp-for="@Model.ticket.sprint" class="fw-bold">Sprint</label>
+            <span class="title d-block form-control">
+                <input asp-for="@Model.ticket.sprint" type="number" min="1" class="form-control border-0" />
+            </span>
+            <span asp-validation-for="@Model.ticket.sprint" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+        <button type="submit" class="btn btn-primary btn-lg shadow-sm signup-button">Update</button>
+    </div>
+</form>

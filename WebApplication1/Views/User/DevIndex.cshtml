@@ -1,0 +1,177 @@
+﻿@model myViewModel
+@{
+    AjaxCallLink link = new AjaxCallLink("/User/DevFilterTickets");
+}
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<partial name="AjaxPartial" model="link"/>
+<div style="display:flex; align-items:center; justify-content:space-between">
+    <h1>Tickets</h1>
+    <div style="display:flex; align-items:center; justify-content:space-between">
+        <form>
+            <div class="form-group">
+                <label for="selectedUser">Select User:</label>
+                <select class="form-control" id="selectedUser">
+                    <option value="">All Users</option>
+                    @foreach (var userFullName in Model.RegisteredUsers)
+                    {
+                        if (userFullName != "admin")
+                        {
+                            <option value="@userFullName">@userFullName</option>
+                        }
+                    }
+                </select>
+            </div>
+        </form>
+        <div class="form-group">
+            <label for="selectedSprint">Select Sprint:</label>
+            <select class="form-control" id="selectedSprint">
+                <option value="">All Sprints</option>
+                @foreach (var sprint in Model.UniqueSprints)
+                {
+                    <option value="@sprint">@sprint</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+<form action="~/User/DevTickets" method="get" class="mx-1 mx-md-4">
+    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+        <button type="submit" class="btn btn-primary btn-lg shadow-sm signup-button">My tickets</button>
+    </div>
+</form>
+<div class="container mt-4">
+    <h1>Task Board</h1>
+    <div id="ticketList">
+        <div class="row">
+            <!-- Column for ToDo -->
+            <div class="col-md-2">
+                <h2>ToDo</h2>
+                @foreach (var ticket in Model.Ticketlist)
+                {
+                    if (ticket.status == "To Do")
+                    {
+                        <div class="card" data-toggle="modal" data-target="#taskModal1">
+                            <div class="card-body">
+                                <h5 class="card-title">@ticket.Title</h5>
+                                <p class="card-text">Assigned to: @ticket.AssignedTo</p>
+                                <p class="card-text">Sprint No: @ticket.sprint</p>
+                                @if (Model.CurrentUser.FullName == ticket.AssignedTo)
+                                {
+                                    <a asp-action="ShowDevTickets" asp-controller="User" asp-route-id="@ticket.Id" class="btn btn-primary">Get Details</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="Showticket" asp-controller="User" asp-route-id="@ticket.Id" class="btn btn-primary">Get Details</a>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <!-- Column for In Process -->
+            <div class="col-md-2">
+                <h2>In Process</h2>
+                @foreach (var ticket in Model.Ticketlist)
+                {
+                    if (ticket.status == "In Process")
+                    {
+                        <div class="card" data-toggle="modal" data-target="#taskModal1">
+                            <div class="card-body">
+                                <h5 class="card-title">@ticket.Title</h5>
+                                <p class="card-text">Assigned to: @ticket.AssignedTo</p>
+                                <p class="card-text">Sprint No: @ticket.sprint</p>
+                                @if (Model.CurrentUser.FullName == ticket.AssignedTo)
+                                {
+                                    <a asp-action="ShowDevTickets" asp-controller="User" asp-route-id="@ticket.Id" class="btn btn-primary">Get Details</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="Showticket" asp-controller="User" asp-route-id="@ticket.Id" class="btn btn-primary">Get Details</a>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <!-- Column for In Review -->
+            <div class="col-md-2">
+                <h2>In Review</h2>
+                @foreach (var ticket in Model.Ticketlist)
+                {
+                    if (ticket.status == "In review")
+                    {
+                        <div class="card" data-toggle="modal" data-target="#taskModal1">
+                            <div class="card-body">
+                                <h5 class="card-title">@ticket.Title</h5>
+                                <p class="card-text">Assigned to: @ticket.AssignedTo</p>
+                                <p class="card-text">Sprint No: @ticket.sprint</p>
+                                @if (Model.CurrentUser.FullName == ticket.AssignedTo)
+                                {
+                                    <a asp-action="ShowDevTickets" asp-controller="User" asp-route-id="@ticket.Id" class="btn btn-primary">Get Details</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="Showticket" asp-controller="User" asp-route-id="@ticket.Id" class="btn btn-primary">Get Details</a>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <!-- Column for In Testing -->
+            <div class="col-md-2">
+                <h2>In Testing</h2>
+                @foreach (var ticket in Model.Ticketlist)
+                {
+                    if (ticket.status == "In Testing")
+                    {
+                        <div class="card" data-toggle="modal" data-target="#taskModal1">
+                            <div class="card-body">
+                                <h5 class="card-title">@ticket.Title</h5>
+                                <p class="card-text">Assigned to: @ticket.AssignedTo</p>
+                                <p class="card-text">Sprint No: @ticket.sprint</p>
+                                @if (Model.CurrentUser.FullName == ticket.AssignedTo)
+                                {
+                                    <a asp-action="ShowDevTickets" asp-controller="User" asp-route-id="@ticket.Id" class="btn btn-primary">Get Details</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="Showticket" asp-controller="User" asp-route-id="@ticket.Id" class="btn btn-primary">Get Details</a>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <!-- Column for Done -->
+            <div class="col-md-2">
+                <h2>Done</h2>
+                @foreach (var ticket in Model.Ticketlist)
+                {
+                    if (ticket.status == "Done")
+                    {
+                        <div class="card" data-toggle="modal" data-target="#taskModal1">
+                            <div class="card-body">
+                                <h5 class="card-title">@ticket.Title</h5>
+                                <p class="card-text">Assigned to: @ticket.AssignedTo</p>
+                                <p class="card-text">Sprint No: @ticket.sprint</p>
+                                @if (Model.CurrentUser.FullName == ticket.AssignedTo)
+                                {
+                                    <a asp-action="ShowDevTickets" asp-controller="User" asp-route-id="@ticket.Id" class="btn btn-primary">Get Details</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="Showticket" asp-controller="User" asp-route-id="@ticket.Id" class="btn btn-primary">Get Details</a>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

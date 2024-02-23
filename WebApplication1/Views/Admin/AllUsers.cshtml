@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "All Users";
+}
+@model List<CustomUser>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Designation</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach(var user in Model)
+        {
+            if(user.Designation != "Admin")
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.FullName</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@user.Designation</td>
+                    <td>
+                        <a asp-action="UpdateUser" asp-controller="Admin" asp-route-id="@user.Id" class="btn btn-primary">Update</a>
+                    </td>
+                    <td>
+                        <a asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@user.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }   
+        }
+    </tbody>
+</table>

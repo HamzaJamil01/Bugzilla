@@ -1,0 +1,30 @@
+﻿@model Ticket
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Assigned To</th>
+            <th>Sprint No.</th>
+            <th>Change Status</th>
+        </tr>
+    </thead>
+    <tbody>
+       
+   
+            <tr>
+                <td>@Model.Id</td>
+                <td>@Model.Title</td>
+                <td>@Model.Description</td>
+                <td>@Model.status</td>
+                <td>@Model.AssignedTo</td>
+                <td>@Model.sprint</td>
+                <td>
+                <a asp-action="UpdateTicket" asp-controller="User" asp-route-id="@Model.Id" class="btn btn-primary">Update</a>
+                </td>
+            </tr>
+
+    </tbody>
+</table>

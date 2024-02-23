@@ -1,0 +1,69 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  webAppName: 'BugzillaWebApp'
+  connectionString: 'your-connection-string'
+  TestResultsDirectory: '$(Agent.TempDirectory)\TestResults'
+
+steps:
+- task: NuGetToolInstaller@1
+  displayName: 'Use NuGet 6.9.1'
+  inputs:
+    versionSpec: 6.9.1
+
+- task: NuGetCommand@2
+  displayName: 'Restore NuGet packages'
+  inputs:
+    restoreSolution: 'WebApplication1.sln'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build solution'
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish web project'
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish'
+    zipAfterPublish: true
+
+- script: dotnet tool install --global dotnet-ef
+  displayName: 'Install EF Core tools'
+
+- script: dotnet ef database update --project $(System.DefaultWorkingDirectory)/WebApplication1/WebApplication1.csproj
+  displayName: 'Run database migrations'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Test solution'
+  inputs:
+    command: 'test'
+    projects: '**/*Tests.csproj'
+    arguments: '--configuration Release'
+    testRunTitle: 'WebApplication1 Tests'
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish artifact for deployment job'
+  inputs:
+    targetPath: $(Build.ArtifactStagingDirectory)/publish
+    artifact: 'published-app'
+
+- download: current
+  artifact: 'published-app'
+
+- task: AzureWebApp@1
+  displayName: 'Deploy to Azure Web App'
+  inputs:
+    azureSubscription: 'BugzillaWebApp'
+    appType: 'webApp'
+    appName: 'BugzillaWebApp'
+    package: '$(Pipeline.Workspace)/published-app'
+    deploymentMethod: 'auto'

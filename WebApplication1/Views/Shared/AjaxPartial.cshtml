@@ -1,0 +1,28 @@
+﻿@model AjaxCallLink
+<script>
+    $(function () {
+        var dropdownChanged = false;
+        function handleDropdownChange() {
+            var selectedUserFullName = $("#selectedUser").val();
+            var selectedSprint = $("#selectedSprint").val();
+            var requestData = {
+                userFullName: selectedUserFullName,
+                sprint: selectedSprint
+            };
+            if (dropdownChanged) {
+                $.get("@{@Model.link}", requestData, function (data) {
+                    $("#ticketList").html(data);
+                });
+                dropdownChanged = false;
+            }
+        }
+        $("#selectedUser, #selectedSprint").change(function () {
+            dropdownChanged = true;
+        });
+        setInterval(function () {
+            if (dropdownChanged) {
+                handleDropdownChange();
+            }
+        }, 500);
+    });
+</script>

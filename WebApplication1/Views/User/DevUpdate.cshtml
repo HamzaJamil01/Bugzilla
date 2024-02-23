@@ -1,0 +1,23 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model StatusUpdate
+
+<form action="~/User/Updatestatus" method="post" class="mx-1 mx-md-4">
+    <div class="d-flex flex-row align-items-center mb-4">
+        <div class="form-outline form-group flex-fill mb-0">
+            <label asp-for="status" class="fw-bold">Status</label>
+            <select asp-for="status" class="form-control">
+                <option value="In Process">In Process</option>
+                <option value="In review">In review</option>
+            </select>
+        </div>
+    </div>
+
+    <input asp-for="id" type="hidden" value="@ViewBag.TicketId">
+    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+        <button type="submit" class="btn btn-primary btn-lg shadow-sm signup-button">Update</button>
+    </div>
+</form>

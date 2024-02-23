@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Update User";
+}
+@model CustomUser
+<form action="~/Admin/UpdateUser" method="post" class="mx-1 mx-md-4">
+    <input asp-for="Id" value="@Model.Id" hidden />
+    <div class="d-flex flex-row align-items-center mb-4">
+        <div class="form-outline flex-fill mb-0">
+            <label asp-for="FullName" class="fw-bold">Name</label>
+            <span class="fullname d-block form-control">
+                <input asp-for="FullName" value="@Model.FullName" class="form-control border-0" />
+            </span>
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="d-flex flex-row align-items-center mb-4">
+        <div class="form-outline flex-fill mb-0">
+            <label asp-for="UserName" class="fw-bold">Username</label>
+            <span class="username d-block form-control">
+                <input asp-for="UserName" value="@Model.UserName" class="form-control border-0" />
+            </span>
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="d-flex flex-row align-items-center mb-4">
+        <div class="form-outline flex-fill mb-0">
+            <label asp-for="Email" class="fw-bold">Email</label>
+            <span class="email d-block form-control">
+                <input asp-for="Email" value="@Model.Email" class="form-control border-0" />
+            </span>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="d-flex flex-row align-items-center mb-4">
+        <div class="form-outline flex-fill mb-0">
+            <label asp-for="Designation" class="fw-bold">Designation</label>
+            <select asp-for="Designation" class="form-control">
+                @if(Model.Designation == "Manager")
+                {
+                    <option value="Manager" selected>Manager</option>
+                }
+                else
+                {
+                    <option value="Manager">Manager</option>
+                }
+                @if (Model.Designation == "Developer")
+                {
+                    <option value="Developer" selected>Developer</option>
+                }
+                else
+                {
+                    <option value="Developer">Developer</option>
+                }
+                @if (Model.Designation == "SQA")
+                {
+                    <option value="SQA" selected>SQA</option>
+                }
+                else
+                {
+                    <option value="SQA">SQA</option>
+                }
+            </select>
+            <span asp-validation-for="Designation" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+        <button type="submit" class="btn btn-primary btn-lg shadow-sm signup-button">Update</button>
+    </div>
+</form>

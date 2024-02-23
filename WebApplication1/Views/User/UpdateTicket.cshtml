@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model TicketUsersViewModel
+
+<form action="~/User/UpdateTicket" method="post" class="mx-1 mx-md-4">
+    <div class="d-flex flex-row align-items-center mb-4">
+        <div class="form-outline flex-fill mb-0">
+            <label asp-for="@Model.ticket.AssignedTo" class="fw-bold">Assigned To</label>
+            <select asp-for="@Model.ticket.AssignedTo" class="form-control">
+                @foreach (var user in Model.user as List<CustomUser> ?? new List<CustomUser>())
+                {
+                    if (user.FullName != "admin")
+                    {
+                        if (user.FullName == Model.ticket.AssignedTo)
+                        {
+                            <option value="@user.FullName" selected>@user.FullName - @user.Designation</option>
+                        }
+                        else
+                        {
+                            <option value="@user.FullName">@user.FullName - @user.Designation</option>
+                        }
+                    }
+                }
+            </select>
+
+            <span asp-validation-for="@Model.ticket.status" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="d-flex flex-row align-items-center mb-4">
+        <div class="form-outline form-group flex-fill mb-0">
+            <label asp-for="@Model.ticket.status" class="fw-bold">Status</label>
+            <select asp-for="@Model.ticket.status" class="form-control">
+                <option value="In Testing">In Testing</option>
+                <option value="Done">Done</option>
+                <option value="To Do">To Do</option>
+            </select>
+        </div>
+    </div>
+
+    <input asp-for="@Model.ticket.Id" type="hidden">
+    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+        <button type="submit" class="btn btn-primary btn-lg shadow-sm signup-button">Update</button>
+    </div>
+</form>
